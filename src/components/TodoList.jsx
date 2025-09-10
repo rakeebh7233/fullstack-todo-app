@@ -1,12 +1,11 @@
 import { TodoCard } from "./TodoCard";
 
 export function TodoList(props) {
-    const { todos } = props;
+    const { todos, selectedTab } = props;
 
-    const tab = "All"; // This can be dynamic based on user selection
-    const filteredTodos = tab === "All" ?
+    const filteredTodos = selectedTab === "All" ?
         todos :
-        tab === "Completed" ?
+        selectedTab === "Completed" ?
             todos.filter(todo => todo.complete) :
             todos.filter(todo => !todo.complete);
     return (
@@ -15,7 +14,9 @@ export function TodoList(props) {
                 return (
                     <TodoCard
                         key={todoIndex}
-                        todo={todo} />
+                        todo={todo}
+                        todoIndex={todos.indexOf(todo)}
+                        {...props} />
                 )
 
             })}
