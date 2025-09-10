@@ -86,3 +86,7 @@ react-todo-app/
 ├── eslint.config.js
 └── README.md
 ```
+
+## Credits
+- CSS styling adapted from **Fantacss** by [jamezmca](https://github.com/jamezmca/fantacss) — licensed under the **MIT License**.
+
