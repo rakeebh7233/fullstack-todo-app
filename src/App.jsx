@@ -9,8 +9,9 @@ function App() {
   const [todos, setTodos] = useState([
     { input: 'Hello! Add your first todo!', complete: true }
   ]);
-
   const [selectedTab, setSelectedTab] = useState("All");
+  const [inputValue, setInputValue] = useState("");
+  const [shouldFocusInput, setShouldFocusInput] = useState(false);
 
   function handleAddTodo(newTodo) {
     let newTodoList = [...todos, { input: newTodo, complete: false }];
@@ -24,6 +25,13 @@ function App() {
     setTodos(newTodoList);
     handleSaveData(newTodoList);
   }
+
+  function handleEditTodo(todoIndex) {
+    handleDeleteTodo(todoIndex);
+    setInputValue(todos[todoIndex].input);
+    setShouldFocusInput(true);
+  }
+
   function handleDeleteTodo(todoIndex) {
     let newTodoList = todos.filter((todo, index) => index !== todoIndex);
     setTodos(newTodoList);
@@ -31,7 +39,7 @@ function App() {
   }
 
   function handleSaveData(currentTodos) {
-    localStorage.setItem("todo-app", JSON.stringify({todos: currentTodos}));
+    localStorage.setItem("todo-app", JSON.stringify({ todos: currentTodos }));
   }
 
   useEffect(() => {
@@ -45,8 +53,14 @@ function App() {
 
       <Header todos={todos} />
       <Tabs todos={todos} selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
-      <TodoList todos={todos} selectedTab={selectedTab} handleCompleteTodo={handleCompleteTodo} handleDeleteTodo={handleDeleteTodo} />
-      <TodoInput handleAddTodo={handleAddTodo} />
+      <TodoList todos={todos} selectedTab={selectedTab} handleCompleteTodo={handleCompleteTodo} handleEditTodo={handleEditTodo} handleDeleteTodo={handleDeleteTodo} />
+      <TodoInput
+        handleAddTodo={handleAddTodo} 
+        inputValue={inputValue} 
+        setInputValue={setInputValue}
+        shouldFocusInput={shouldFocusInput}
+        setShouldFocusInput={setShouldFocusInput}
+      />
     </>
   )
 }

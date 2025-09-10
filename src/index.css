@@ -102,6 +102,12 @@ hr {
   background: var(--color-link);
 }
 
+.todo-buttons button:nth-child(2) {
+  /* color: #8aff80; */
+  color: var(--background-primary);
+  background: var(--gradient-start)
+}
+
 .todo-buttons button:last-of-type {
   /* color: #9580ff;
   background: rgba(149, 128, 255, .1); */
