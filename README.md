@@ -16,10 +16,7 @@ This app lets you manage tasks efficiently with features like filtering, complet
   - [Setup & Run](#setup--run)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
-- [Available Scripts](#available-scripts)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
+- [Credits](#credits)
 
 ---
 
@@ -86,7 +83,7 @@ react-todo-app/
 ├── eslint.config.js
 └── README.md
 ```
-
+--- 
 ## Credits
 - CSS styling adapted from **Fantacss** by [jamezmca](https://github.com/jamezmca/fantacss) — licensed under the **MIT License**.
 
