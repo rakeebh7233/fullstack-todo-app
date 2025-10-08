@@ -1,5 +1,5 @@
 export function Header(props) {
-    const { todos } = props;
+    const { todos, setShowModal } = props;
     const todosLength = todos.length
 
     const isTasksPlural = todosLength !== 1;
@@ -8,6 +8,7 @@ export function Header(props) {
         <header>
             <h1 className="text-gradient">
                 You have {todosLength} open {taskOrTasks}.</h1>
+            <button onClick={() => setShowModal(true)}>Login</button>
         </header>
     );
 } 
