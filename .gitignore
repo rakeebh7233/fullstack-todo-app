@@ -12,7 +12,6 @@ dist
 dist-ssr
 *.local
 .env
-todo-app.rest
 
 # Editor directories and files
 .vscode/*

@@ -4,25 +4,25 @@ import { Tabs } from './components/Tabs'
 import { TodoInput } from './components/TodoInput'
 import { TodoList } from './components/TodoList'
 import Modal from './components/Modal';
+import { useAuth } from './context/AuthContext';
 
 function App() {
-
-  const [todos, setTodos] = useState([
-    { input: 'Hello! Add your first todo!', complete: true }
-  ]);
+  const { token } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const [todos, setTodos] = useState([]);
   const [selectedTab, setSelectedTab] = useState("All");
   const [inputValue, setInputValue] = useState("");
   const [shouldFocusInput, setShouldFocusInput] = useState(false);
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(false);
 
   function handleAddTodo(newTodo) {
     let newTodoList = [...todos, { input: newTodo, complete: false }];
     setTodos(newTodoList);
-    handleSaveData(newTodoList)
+    handleSaveData(newTodoList);
   }
 
   function handleCompleteTodo(todoIndex) {
-    let newTodoList = [...todos]
+    let newTodoList = [...todos];
     newTodoList[todoIndex].complete = true;
     setTodos(newTodoList);
     handleSaveData(newTodoList);
@@ -44,20 +44,37 @@ function App() {
     localStorage.setItem("todo-app", JSON.stringify({ todos: currentTodos }));
   }
 
+  // CRUD - GET
+  async function fetchTodos() {
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/todos', {
+        method: "GET",
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      setTodos(await response.json());
+    } catch (err) {
+      console.log(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   function handleCloseModal() {
-    setShowModal(false)
+    setShowModal(false);
   }
 
   useEffect(() => {
-    if (!localStorage || !localStorage.getItem("todo-app")) { return; }
-    let db = JSON.parse(localStorage.getItem("todo-app"));
-    setTodos(db.todos);
+    if (token) {
+      fetchTodos();
+    } 
+    console.log(token)
   }, []);
 
   return (
     <>
       {showModal && (
-        <Modal setShowModal={setShowModal}></Modal>
+        <Modal setShowModal={setShowModal} handleCloseModal={handleCloseModal}></Modal>
       )}
 
       <Header todos={todos} setShowModal={setShowModal} />

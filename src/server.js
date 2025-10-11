@@ -8,7 +8,8 @@ const PORT = process.env.PORT || 5000
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-app.use(express.static(__dirname))
+app.use(express.json())
+// app.use(express.static(__dirname))
 
 /*
 // Production only: serve React build
