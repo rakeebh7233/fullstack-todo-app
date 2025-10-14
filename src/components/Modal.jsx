@@ -23,7 +23,7 @@ export default function Modal(props) {
             let data;
             if (isRegistration) {
                 // Registration
-                const response = await fetch('/api/register', {
+                const response = await fetch('/api/auth/register', {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
@@ -31,7 +31,7 @@ export default function Modal(props) {
                 data = await response.json()
             } else {
                 // Login
-                const response = await fetch('/api/login', {
+                const response = await fetch('/api/auth/login', {
                     method: "POST",
                     headers: { "Content-Type": 'application/json' },
                     body: JSON.stringify({ email, password})
@@ -46,8 +46,6 @@ export default function Modal(props) {
         } finally {
             setIsAuthenticating(false)
         }
-
-
     }
 
     return ReactDom.createPortal(
@@ -57,7 +55,7 @@ export default function Modal(props) {
                 <h2 className="sign-up-text">{!isRegistration ? 'Register' : "Login"}</h2>
                 <p>{!isRegistration ? 'Create an account!' : 'Login to your account!'}</p>
                 {error && (
-                    <p><i class="fa fa-exclamation-circle" aria-hidden="true" style={{ color: "red" }}></i> {error}</p>
+                    <p><i className="fa fa-exclamation-circle" aria-hidden="true" style={{ color: "red" }}></i> {error}</p>
                 )}
                 <input value={email} onChange={(e) => { setEmail(e.target.value) }} type="text" placeholder="Email" />
                 <input value={password} onChange={(e) => { setPassword(e.target.value) }} type="password" placeholder="*********" />
@@ -66,7 +64,9 @@ export default function Modal(props) {
                 <hr />
                 <div className="register-content">
                     <p>{!isRegistration ? 'Already have an account?' : 'Don\'t have an account?'}</p>
-                    <button onClick={() => { setIsRegistration(isRegistration) }}><p>{!isRegistration ? 'Login' : "Register"}</p></button>
+                    <button onClick={() => { setIsRegistration(!isRegistration) }}>
+                        <p>{!isRegistration ? 'Login' : "Register"}</p>
+                    </button>
                 </div>
             </div>
         </div>,

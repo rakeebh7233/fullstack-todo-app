@@ -1,6 +1,9 @@
+import { useAuth } from "../context/AuthContext";
+
 export function Tabs(props) {
     const { todos, selectedTab, setSelectedTab } = props;
-
+    const { token } = useAuth();
+    
     const tabs = ["All", "Active", "Completed"];
 
     return (
@@ -13,7 +16,7 @@ export function Tabs(props) {
                         .length :
                         todos.filter(todo => todo.complete).length
                 return (
-                    <button onClick={()=>{
+                    <button disabled={!token} onClick={()=>{
                         setSelectedTab(tab);
                     }} key={tabIndex} className={"tab-button "
                         + (tab===selectedTab ? "tab-selected" : "")}>

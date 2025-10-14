@@ -84,6 +84,11 @@ h1 {
   cursor: pointer;
 }
 
+.tab-button:disabled {
+  cursor: not-allowed;
+  border: none;
+}
+
 .tab-button span {
   opacity: 0.4;
   font-weight: 400;
