@@ -3,9 +3,9 @@ import ReactDom from "react-dom";
 import { useAuth } from "../context/AuthContext";
 
 export default function Modal(props) {
-    const { setShowModal, handleCloseModal } = props
+    const { handleCloseModal } = props
     const { login } = useAuth();
-    const [isRegistration, setIsRegistration] = useState(true);
+    const [isRegistration, setIsRegistration] = useState(false);
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [isAuthenticating, setIsAuthenticating] = useState(false)
@@ -26,7 +26,7 @@ export default function Modal(props) {
                 const response = await fetch('/api/auth/register', {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
+                    body: JSON.stringify({ username: email, password })
                 });
                 data = await response.json()
             } else {
@@ -34,11 +34,15 @@ export default function Modal(props) {
                 const response = await fetch('/api/auth/login', {
                     method: "POST",
                     headers: { "Content-Type": 'application/json' },
-                    body: JSON.stringify({ email, password})
+                    body: JSON.stringify({ username: email, password})
                 })
                 data = await response.json()
             }
+            if (!data.token) {
+                throw new Error("Failed to authenticate...")
+            }
             login(data.token);
+            handleCloseModal();
 
         } catch (err) {
             console.log(err.message)
@@ -52,8 +56,8 @@ export default function Modal(props) {
         <div className="modal-container">
             <button onClick={handleCloseModal} className="modal-underlay"></button>
             <div className="modal-content">
-                <h2 className="sign-up-text">{!isRegistration ? 'Register' : "Login"}</h2>
-                <p>{!isRegistration ? 'Create an account!' : 'Login to your account!'}</p>
+                <h2 className="sign-up-text">{isRegistration ? 'Register' : "Login"}</h2>
+                <p>{isRegistration ? 'Create an account!' : 'Login to your account!'}</p>
                 {error && (
                     <p><i className="fa fa-exclamation-circle" aria-hidden="true" style={{ color: "red" }}></i> {error}</p>
                 )}
@@ -63,9 +67,9 @@ export default function Modal(props) {
                 <button onClick={handleAuthentication}><p>{isAuthenticating ? 'Authenticating...' : 'Submit'}</p></button>
                 <hr />
                 <div className="register-content">
-                    <p>{!isRegistration ? 'Already have an account?' : 'Don\'t have an account?'}</p>
-                    <button onClick={() => { setIsRegistration(!isRegistration) }}>
-                        <p>{!isRegistration ? 'Login' : "Register"}</p>
+                    <p>{isRegistration ? 'Already have an account?' : 'Don\'t have an account?'}</p>
+                    <button onClick={() => { setIsRegistration(!isRegistration); setError(null) }}>
+                        <p>{isRegistration ? 'Login' : "Register"}</p>
                     </button>
                 </div>
             </div>

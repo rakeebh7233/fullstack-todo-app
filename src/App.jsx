@@ -68,13 +68,13 @@ function App() {
     if (token) {
       fetchTodos();
     } 
-    console.log(token)
-  }, []);
+    console.log(token);
+  }, [token]);
 
   return (
     <>
       {showModal && (
-        <Modal setShowModal={setShowModal} handleCloseModal={handleCloseModal}></Modal>
+        <Modal handleCloseModal={handleCloseModal}></Modal>
       )}
 
       <Header todos={todos} setShowModal={setShowModal} />

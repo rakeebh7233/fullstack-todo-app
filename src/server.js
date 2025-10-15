@@ -3,6 +3,7 @@ import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import authRoutes from './routes/authRoutes.js';
 import todoRoutes from './routes/todoRoutes.js';
+import authMiddleware from './middleware/authMiddleware.js';
 
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -11,7 +12,7 @@ app.use(express.json())
 
 // Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/todos', todoRoutes);
+app.use('/api/todos', authMiddleware, todoRoutes);
 
 app.get('/', (req,res) => {
   res.send("HELLO WORLD;")
