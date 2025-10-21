@@ -12,9 +12,9 @@ export function Tabs(props) {
                 const numOfTasks = tab === "All" ? 
                     todos.length : 
                     tab === "Active" ?
-                        todos.filter(todo => !todo.complete)
+                        todos.filter(todo => !todo.completed)
                         .length :
-                        todos.filter(todo => todo.complete).length
+                        todos.filter(todo => todo.completed).length
                 return (
                     <button disabled={!token} onClick={()=>{
                         setSelectedTab(tab);

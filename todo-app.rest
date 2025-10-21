@@ -18,3 +18,34 @@ Content-Type: application/json
     "username": "test@gmail.com",
     "password" : "123456"
 }
+
+
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzYxMDE5NTQ0LCJleHAiOjE3NjExMDU5NDR9.igd1xqx7JQ7XKuZhLZoFmPc7SYIIX6eKeoEu_UQ03-Q
+
+### Fetch all todos GET /api/todos
+GET http://localhost:5000/api/todos
+Authorization: Bearer {{token}}
+
+### Create a todo POST /api/todos
+POST http://localhost:5000/api/todos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "task": "Finish coding project"
+}
+
+### Update a todo PUT /api/todos/:id
+PUT http://localhost:5000/api/todos/2
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "task": "Finish coding project",
+    "completed": 1
+}
+
+
+### Delete a todo DELETE /api/todos/:id
+DELETE http://localhost:5000/api/todos/2
+Authorization: Bearer {{token}}

@@ -2,11 +2,12 @@ import { useRef, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 
 export function TodoInput(props) {
-    const { handleAddTodo, inputValue, setInputValue,
-        shouldFocusInput, setShouldFocusInput } = props;
+    const { inputValue, setInputValue, updateTodo, EditingTask, setEditingTask,
+        shouldFocusInput, setShouldFocusInput, createTodo } = props;
     const { token } = useAuth();
     const inputRef = useRef(null)
 
+    // Focus input when edit is triggered
     useEffect(() => {
         if (shouldFocusInput && inputRef.current) {
             inputRef.current.focus();
@@ -26,7 +27,13 @@ export function TodoInput(props) {
                 disabled = { !token } />
             <button disabled = { !token } onClick={() => {
                 if (!inputValue) return;
-                handleAddTodo(inputValue);
+                if (EditingTask) {
+                    updateTodo(EditingTask, inputValue, 0);
+                    setEditingTask(null);
+                } else {
+                    createTodo();
+                }
+
                 setInputValue("");
             }}>
                 <i className="fa-solid fa-plus"></i>

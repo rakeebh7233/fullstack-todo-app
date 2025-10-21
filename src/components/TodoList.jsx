@@ -9,8 +9,7 @@ export function TodoList(props) {
         return (
             <TodoCard 
                 key={-1}
-                todo={{ input: "Please Login to view your tasks."}}
-                todoIndex={-1}
+                todo={{ task: "Please Login to view your tasks."}}
                 {...props}
             />
         )
@@ -19,8 +18,8 @@ export function TodoList(props) {
     const filteredTodos = selectedTab === "All" ?
         todos :
         selectedTab === "Completed" ?
-            todos.filter(todo => todo.complete) :
-            todos.filter(todo => !todo.complete);
+            todos.filter(todo => todo.completed) :
+            todos.filter(todo => !todo.completed);
 
     return (
         <>
@@ -29,7 +28,6 @@ export function TodoList(props) {
                     <TodoCard
                         key={todoIndex}
                         todo={todo}
-                        todoIndex={todos.indexOf(todo)}
                         {...props} />
                 )
 

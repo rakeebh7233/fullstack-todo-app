@@ -8,45 +8,15 @@ import { useAuth } from './context/AuthContext';
 
 function App() {
   const { token } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
   const [todos, setTodos] = useState([]);
   const [selectedTab, setSelectedTab] = useState("All");
   const [inputValue, setInputValue] = useState("");
   const [shouldFocusInput, setShouldFocusInput] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  function handleAddTodo(newTodo) {
-    let newTodoList = [...todos, { input: newTodo, complete: false }];
-    setTodos(newTodoList);
-    handleSaveData(newTodoList);
-  }
-
-  function handleCompleteTodo(todoIndex) {
-    let newTodoList = [...todos];
-    newTodoList[todoIndex].complete = true;
-    setTodos(newTodoList);
-    handleSaveData(newTodoList);
-  }
-
-  function handleEditTodo(todoIndex) {
-    handleDeleteTodo(todoIndex);
-    setInputValue(todos[todoIndex].input);
-    setShouldFocusInput(true);
-  }
-
-  function handleDeleteTodo(todoIndex) {
-    let newTodoList = todos.filter((todo, index) => index !== todoIndex);
-    setTodos(newTodoList);
-    handleSaveData(newTodoList);
-  }
-
-  function handleSaveData(currentTodos) {
-    localStorage.setItem("todo-app", JSON.stringify({ todos: currentTodos }));
-  }
-
-  // CRUD - GET
+  // CRUD LOGIC
   async function fetchTodos() {
-    setIsLoading(true);
     try {
       const response = await fetch('/api/todos', {
         method: "GET",
@@ -55,10 +25,58 @@ function App() {
       setTodos(await response.json());
     } catch (err) {
       console.log(err.message);
-    } finally {
-      setIsLoading(false);
     }
   }
+
+  async function createTodo() {
+    try {
+      const response = await fetch('api/todos', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ task: inputValue })
+      });
+      fetchTodos();
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+
+  async function updateTodo(id, updatedTask, updatedCompleted) {
+    try {
+      await fetch(`api/todos/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ task: updatedTask, completed: updatedCompleted })
+      });
+      fetchTodos();
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+
+  function handleEditTodo(todo) {
+    setInputValue(todo.task);
+    setShouldFocusInput(true);
+  }
+
+  async function deleteTodo(id) {
+    try {
+      await fetch(`api/todos/${id}`, {
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      fetchTodos();
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+
 
   function handleCloseModal() {
     setShowModal(false);
@@ -67,7 +85,7 @@ function App() {
   useEffect(() => {
     if (token) {
       fetchTodos();
-    } 
+    }
     console.log(token);
   }, [token]);
 
@@ -79,13 +97,23 @@ function App() {
 
       <Header todos={todos} setShowModal={setShowModal} />
       <Tabs todos={todos} selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
-      <TodoList todos={todos} selectedTab={selectedTab} handleCompleteTodo={handleCompleteTodo} handleEditTodo={handleEditTodo} handleDeleteTodo={handleDeleteTodo} />
+      <TodoList
+        todos={todos}
+        selectedTab={selectedTab}
+        updateTodo={updateTodo}
+        setEditingTask={setEditingTask}
+        handleEditTodo={handleEditTodo}
+        deleteTodo={deleteTodo}
+      />
       <TodoInput
-        handleAddTodo={handleAddTodo}
         inputValue={inputValue}
         setInputValue={setInputValue}
         shouldFocusInput={shouldFocusInput}
         setShouldFocusInput={setShouldFocusInput}
+        editingTask={editingTask}
+        setEditingTask={setEditingTask}
+        updateTodo={updateTodo}
+        createTodo={createTodo}
       />
     </>
   )
