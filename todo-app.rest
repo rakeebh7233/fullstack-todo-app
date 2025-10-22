@@ -20,7 +20,7 @@ Content-Type: application/json
 }
 
 
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzYxMDE5NTQ0LCJleHAiOjE3NjExMDU5NDR9.igd1xqx7JQ7XKuZhLZoFmPc7SYIIX6eKeoEu_UQ03-Q
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzYxMDk0MzEwLCJleHAiOjE3NjExODA3MTB9.9m2HQK0zC6UQUiUtFJKtyCZYBizkqzFdiDQzKiw3H4Q
 
 ### Fetch all todos GET /api/todos
 GET http://localhost:5000/api/todos

@@ -2,7 +2,7 @@ import { useRef, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 
 export function TodoInput(props) {
-    const { inputValue, setInputValue, updateTodo, EditingTask, setEditingTask,
+    const { inputValue, setInputValue, updateTodo, editingTask, setEditingTask,
         shouldFocusInput, setShouldFocusInput, createTodo } = props;
     const { token } = useAuth();
     const inputRef = useRef(null)
@@ -27,13 +27,13 @@ export function TodoInput(props) {
                 disabled = { !token } />
             <button disabled = { !token } onClick={() => {
                 if (!inputValue) return;
-                if (EditingTask) {
-                    updateTodo(EditingTask, inputValue, 0);
+                if (editingTask) {
+                    updateTodo(editingTask, inputValue, 0);
                     setEditingTask(null);
                 } else {
                     createTodo();
                 }
-
+                setEditingTask(null);
                 setInputValue("");
             }}>
                 <i className="fa-solid fa-plus"></i>

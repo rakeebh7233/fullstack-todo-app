@@ -9,11 +9,14 @@
     "build": "vite build",
     "preview": "vite preview"
   },
-  "description": "A simple todo app that uses NodeJS backend and React frontend., a SQLite Database and JWT authentication. ",
+  "description": "A dockerized fullstack todo app that uses NodeJS backend, a PostgreSQL database, a Prisma ORM, JWT authentication, and a React frontend with Vite. ",
   "dependencies": {
+    "@prisma/client": "^6.17.1",
     "bcryptjs": "^3.0.2",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "pg": "^8.16.3",
+    "prisma": "^6.17.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
