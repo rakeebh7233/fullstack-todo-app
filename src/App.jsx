@@ -77,7 +77,6 @@ function App() {
     }
   }
 
-
   function handleCloseModal() {
     setShowModal(false);
   }
@@ -85,6 +84,8 @@ function App() {
   useEffect(() => {
     if (token) {
       fetchTodos();
+    } else {
+      setTodos([]);
     }
     console.log(token);
   }, [token]);

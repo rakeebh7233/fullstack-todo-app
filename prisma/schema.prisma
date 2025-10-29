@@ -26,5 +26,5 @@ model Todo {
   task      String
   completed Boolean   @default(false)
   userId    Int
-  userId    User      @relation(fields: [userId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
 }

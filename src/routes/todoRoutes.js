@@ -1,5 +1,4 @@
 import express from 'express';
-import db from '../db.js';
 import prisma from '../prismaClient.js';
 
 const router = express.Router();
@@ -38,7 +37,7 @@ router.put('/:id', async (req, res) => {
             userId: req.userId
         },
         data: {
-            completed: completed,
+            completed: !!completed,
             task: task
         }
     }) 
