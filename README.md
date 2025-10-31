@@ -1,4 +1,4 @@
-# React To-Do App
+# Full-Stack To-Do App
 
 A simple and intuitive **To-Do List** application built with **React**, **Node.js**, **Express.js**, **Prisma**, **PostgreSQL**, & **Docker**.  
 
