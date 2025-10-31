@@ -1,7 +1,6 @@
 # React To-Do App
 
-A simple and intuitive **To-Do List** application built with **React** and **Vite**.  
-This app lets you manage tasks efficiently with features like filtering, completion tracking, and data persistence.
+A simple and intuitive **To-Do List** application built with **React**, **Node.js**, **Express.js**, **Prisma**, **PostgreSQL**, & **Docker**.  
 
 🔗 **Live Demo:** [React To-Do App on Netlify](https://rakeeb-todo-app.netlify.app/)
 
@@ -10,7 +9,6 @@ This app lets you manage tasks efficiently with features like filtering, complet
 ## Table of Contents
 - [Features](#features)
 - [Demo](#demo)
-- [Technologies](#technologies)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Setup & Run](#setup--run)
@@ -24,26 +22,22 @@ This app lets you manage tasks efficiently with features like filtering, complet
 - **Add**, **Edit**, and **Delete** tasks
 - Mark tasks as **completed / uncompleted**
 - **Filter tasks** by status: All, Active, Completed
-- **Persistent storage** — tasks are saved in **localStorage**
-- Real-time **Hot Module Replacement** via Vite
-- Lightweight and minimal setup
+- **Persistent storage** — tasks are saved in **PostgreSQL**
+- **Authentication/Authorization** - Secured with **bcrypt** and **JWT** 
 
 ## Demo
 🔗 [Click here to try the app](https://rakeeb-todo-app.netlify.app/)
 
-<img width="817" height="431" alt="image" src="https://github.com/user-attachments/assets/00ee202d-725c-48a3-a8f2-c6f5dfb3c577" />
+<img src="public/LoginUI.png" alt="Login UI" height="300">
+<img src="public/MainUI.png" alt="Main UI" height="300">
 
-## Technologies
-- **React** (with hooks like `useState` & `useEffect`)  
-- **Vite** — fast development build tool  
-- **LocalStorage** — for persistence  
-- **ESLint** — code quality  
-- **CSS** — styling
+
+Note: This demo has limited features and doesn't use any backend (due to limitations with netlify). It is only for frontend demonstration purposes.
 
 ## Getting Started
 
 ### Prerequisites
-Make sure you have **Node.js** (v14+) and **npm** or **yarn** installed.
+Make sure you have  **Docker Desktop** installed.
 
 ### Setup & Run
 ```bash
@@ -53,30 +47,49 @@ git clone https://github.com/rakeebh7233/react-todo-app.git
 # Navigate into the project
 cd react-todo-app
 
-# Install dependencies
-npm install
-# Run the development server
-npm run dev
+# Generate Prisma Client
+npx prisma generate
+
+# Build docker images
+docker compose build
+
+# Create PostgreSQP migrations and apply them
+docker compose run app npx prisma migrate deploy
+
+# Boot up docker containers
+docker compose up
 ```
-Then, open your browser and go to http://localhost:5173.
+Then, open your browser and go to http://localhost:5000.
 
 ### Usage
 * Add a task: Enter text in the input field and hit Enter or click "Add".
 * Mark Complete/incomplete: Use the button next to each task.
 * Filter tasks: Switch between All, Active, or Completed views.
 * Delete a task: Click the delete button next to a task.
-* Edit a task: Click the edit button next to a task
-* Persistence: Tasks remain saved in your browser even after refresh (via localStorage).
+* Edit a task: Click the edit button next to a task.
+* Persistence: Tasks remain saved in your browser even after refresh.
 
 ## Project Structure
 ```
-react-todo-app/
+fullstack-todo-app/
+├── prisma/                           # Prisma ORM setup: schema, migrations, and database configuration
 ├── public/
 ├── src/
-│   ├── components/        # React components (e.g., TodoCard, TodoList, Input)
-│   ├── App.jsx            # Main app logic
-│   ├── index.jsx          # Entry point
-│   └── styles/            # CSS files
+│   ├── components/                   # React components (e.g., TodoCard, TodoList, Input)
+│   ├── context/AuthContext.jsx       # Global Authentication Context
+│   ├── middleware/authMiddleware.js  # Middleware for veryifying JWT and protecting routes
+│   ├── routes/
+│   │   ├── authRoutes.js             # Authentication Endpoints
+│   │   └── todoRoutes.js             # TodoList Endpoints
+│   ├── styles/                       # CSS files
+│   ├── App.jsx                       # Main app logic
+│   ├── db.js                         # [Unused] DB for development purposes
+│   ├── main.jsx                      # React entry point
+│   ├── prismaClient.js               # Prisma client database setup and table creation
+│   └── server.js                     # Main server entry point that sets up routing and middleware
+│
+├── docker-compose.yaml
+├── Dockerfile
 ├── index.html
 ├── package.json
 ├── vite.config.js

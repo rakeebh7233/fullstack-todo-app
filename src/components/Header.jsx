@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthContext";
 export function Header(props) {
     const { todos, setShowModal } = props;
     const { token, logout } = useAuth();
-    const todosLength = todos.length;
+    const todosLength = todos.filter(todo => !todo.completed).length
     const isTasksPlural = todosLength !== 1;
     const taskOrTasks = isTasksPlural ? 'tasks' : 'task';
 
